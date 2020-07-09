@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: '.,!node_modules'
-          target: '~/app/rei-do-sticker-backend'
+          target: '~/app/app-name'
 
       # Executar Yarn na Digital Ocean
       - name: executing remote ssh commands using password
@@ -44,6 +44,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/app/rei-do-sticker-backend
+            cd ~/app/app-name
             yarn
-            pm2 restart rei-do-sticker
+            pm2 restart app-name
