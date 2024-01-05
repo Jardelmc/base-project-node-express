@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-import UserMongo from '../schemas/UserSchema';
+import UserSchema from '../schemas/userSchema';
 
 class SessionController {
   async create(req, res) {
@@ -12,7 +12,7 @@ class SessionController {
         return res.status(200).json({ err: 'Preencha todos os campos' });
       }
 
-      const user = await UserMongo.findOne({ email });
+      const user = await UserSchema.findOne({ email });
 
       if (!user) {
         return res.status(200).json({ err: 'Usuário não encontrado' });

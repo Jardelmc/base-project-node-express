@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 
-import UserMongo from '../schemas/UserSchema';
+import UserSchema from '../schemas/userSchema';
 import validateUser from '../validations/UserValidation';
 
 class UserController {
@@ -13,7 +13,7 @@ class UserController {
       user.password_hash = await bcrypt.hash(user.password, 8);
 
       try {
-        await UserMongo.create(user);
+        await UserSchema.create(user);
 
         return res
           .status(200)
