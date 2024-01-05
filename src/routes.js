@@ -1,21 +1,20 @@
+// src/routes.js
 import { Router } from 'express';
-// import multer from 'multer';
+import SessionController from './app/controllers/sessionController';
+import UserController from './app/controllers/userController';
 import authMiddleware from './app/middlewares/auth';
-
-import SessionController from './app/controllers/SessionController';
-import UserController from './app/controllers/UserController';
 
 const routes = new Router();
 
-routes.post('/user/create', UserController.create);
-
+// Rotas públicas
+routes.post('/users', UserController.create);
 routes.post('/sessions', SessionController.create);
-
-routes.get('/', async (req, res) => {
-  return res.status(200).json();
-});
 
 // Rotas autenticadas
 routes.use(authMiddleware);
+routes.get('/users', UserController.list);
+routes.get('/users/:userId', UserController.get);
+routes.put('/users/:userId', UserController.update);
+routes.delete('/users/:userId', UserController.delete);
 
 export default routes;

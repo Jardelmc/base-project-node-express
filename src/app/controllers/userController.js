@@ -1,30 +1,51 @@
-import bcrypt from 'bcryptjs';
-
-import UserSchema from '../schemas/userSchema';
-import validateUser from '../validations/UserValidation';
+// src/controllers/UserController.js
+import UserService from '../services/userService';
 
 class UserController {
-  async create(req, res) {
-    const user = req.body;
-
-    const isValidUser = await validateUser(user);
-
-    if (isValidUser) {
-      user.password_hash = await bcrypt.hash(user.password, 8);
-
-      try {
-        await UserSchema.create(user);
-
-        return res
-          .status(200)
-          .json({ message: 'Usuário cadastrado com sucesso' });
-      } catch (error) {
-        return res.status(200).json({ err: 'Email já cadastrado' });
-      }
+    async create(req, res) {
+        try {
+            const user = await UserService.createUser(req.body);
+            res.status(201).json({ message: 'Usuário cadastrado com sucesso', user });
+        } catch (error) {
+            res.status(400).json({ err: error.message });
+        }
     }
 
-    return res.status(400).json({ err: 'Formulário inválido' });
-  }
+    async get(req, res) {
+        try {
+            const user = await UserService.findUserById(req.params.userId);
+            res.status(200).json(user);
+        } catch (error) {
+            res.status(404).json({ err: error.message });
+        }
+    }
+
+    async update(req, res) {
+        try {
+            const user = await UserService.updateUser(req.params.userId, req.body);
+            res.status(200).json({ message: 'Usuário atualizado com sucesso', user });
+        } catch (error) {
+            res.status(400).json({ err: error.message });
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            await UserService.deleteUser(req.params.userId);
+            res.status(200).json({ message: 'Usuário deletado com sucesso' });
+        } catch (error) {
+            res.status(400).json({ err: error.message });
+        }
+    }
+
+    async list(req, res) {
+        try {
+            const users = await UserService.listUsers();
+            res.status(200).json(users);
+        } catch (error) {
+            res.status(400).json({ err: error.message });
+        }
+    }
 }
 
 export default new UserController();
