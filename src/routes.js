@@ -1,7 +1,7 @@
 // src/routes.js
 import { Router } from 'express';
 import SessionController from './app/controllers/sessionController';
-import UserController from './app/controllers/userController';
+import UserController from './app/controllers/uuserController';
 import authMiddleware from './app/middlewares/auth';
 
 const routes = new Router();
